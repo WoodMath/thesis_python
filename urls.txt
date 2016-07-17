@@ -1,0 +1,6 @@
+https://rdmilligan.wordpress.com/2015/08/29/opencv-and-opengl-using-python/
+https://rdmilligan.wordpress.com/2015/07/02/augmented-reality-using-opencv-and-python/
+http://stackoverflow.com/questions/32210107/opencv-python-opengl-texture
+http://www.alecjacobson.com/weblog/?p=1875
+http://www.cs.ucsb.edu/~holl/CS290I/opengl_cv.cpp
+http://docs.opencv.org/2.4/modules/core/doc/opengl_interop.html
