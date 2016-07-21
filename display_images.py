@@ -4,9 +4,15 @@ import OpenGL
 from OpenGL.GL import *     
 from OpenGL.GLU import *    
 from OpenGL.GLUT import *
+from PIL import Image
+from input_states import *
 
 Angle = 0
 Incr = 1
+
+iTextureCount=0
+iTextureIDs=[]
+sTextureFilenames=[]
 
 class Im:
       def __init__(self):
@@ -15,11 +21,20 @@ class Im:
 def load_image(sImage, mProjection):
       # Loads an image and its projection matrix,
       # adds to collection, and return identifier
+      global iTextureCount
+      global iTextureIds
+      global sTextureFilenames
+      
       return
 
 def load_images():
       # Loads the image collection into OpenGL format
 
+      global iTextureCount
+      global iTextureIds
+      global sTextureFilenames
+
+      iTextureIDs=glGenTextures( iTextureCount )
       return
 
 def render_images():
