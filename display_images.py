@@ -12,6 +12,7 @@ Incr = 1
 
 iTextureCount=0
 iTextureIDs=[]
+iTextureIDs_list=[]
 sTextureFilenames=[]
 mProjections=[]
 class Im:
@@ -26,7 +27,11 @@ def load_image(sImage, mProjection):
       global sTextureFilenames
       global mProjections
       sTextureFilenames.append(sImage)
-      ++iTextureCount
+      iTextureCount += 1
+      print('sTextureFilenames=',sTextureFilenames)
+      print('iTextureCount=',str(iTextureCount))      
+      print('iTextureIDs=',str(iTextureIDs))
+      
       return
 
 def load_images():
@@ -34,23 +39,36 @@ def load_images():
 
       global iTextureCount
       global iTextureIDs
+      global iTextureIDs_list
       global sTextureFilenames
 
+      print('iTextureCount=',str(iTextureCount))
+      
+      iTextureIDs=glGenTextures( iTextureCount )
       print('iTextureIDs=',str(iTextureIDs))
 
-      iTextureIDs=glGenTextures( iTextureCount )
-      for iID in iTextureIDs:
+      if(iTextureIDs.size==1):
+            iTextureIDs_list = [iTextureIDs]
+      else:
+            iTextureIDs_list = iTextureIDs
+#      iTextureIDs_list = iTextureIDs
+
+      for iID in iTextureIDs_list:
+            
             glBindTexture(GL_TEXTURE_2D, iID)
-            iIndex = iTextureIDs.index(iID)
+            iIndex = iTextureIDs_list.index(iID)
             sFilename = sTextureFilenames[iIndex]
             image = Image.open(sFilename)
 	
             ix = image.size[0]
             iy = image.size[1]
 
+            print(' ix = ',str(ix))
+            print(' iy = ',str(iy))
+
             image = image.tobytes("raw", "RGBX", 0, -1)
 	
-            # Create Texture	
+            # Create Texture
             glBindTexture(GL_TEXTURE_2D, iID)   # 2d texture (x and y size)
 
             glPixelStorei(GL_UNPACK_ALIGNMENT,1)
@@ -62,11 +80,75 @@ def load_images():
             glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
             glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
             glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL)
-      
+            glEnable(GL_TEXTURE_2D)
+
+
+
+      glEnable(GL_TEXTURE_2D)
+      return
+      glClearColor(0.0, 0.0, 0.0, 0.0)	# This Will Clear The Background Color To Black
+      glClearDepth(1.0)					# Enables Clearing Of The Depth Buffer
+      glDepthFunc(GL_LESS)				# The Type Of Depth Test To Do
+      glEnable(GL_DEPTH_TEST)				# Enables Depth Testing
+      glShadeModel(GL_SMOOTH)				# Enables Smooth Color Shading
+	
+      glMatrixMode(GL_PROJECTION)
+#      glLoadIdentity()					# Reset The Projection Matrix
+										# Calculate The Aspect Ratio Of The Window
+#      gluPerspective(45.0, float(Width)/float(Height), 0.1, 100.0)
+
+      glMatrixMode(GL_MODELVIEW)
+    
       return
 
-def render_image(iIndex):
+def render_image(iID):
       # Renders the images from the collection
+
+      global iTextureIDs
+      global iTextureIDs_list
+
+      print('iTextureIDs = ',str(iTextureIDs))
+      print('iTextureIDs = ',str(type(iTextureIDs)))
+      print('iTextureIDs_list = ',str(type(iTextureIDs_list)))
+
+
+#      iIndex = iTextureIDs_list.index(iID)
+      iIndex = iID
+      print(' iIndex = ',str(iIndex))
+#      return
+      if(not iTextureIDs.size):
+            return
+      elif(iTextureIDs.size==1):
+            glActiveTexture(GL_TEXTURE0 + iTextureIDs - 1)
+      else:
+            glActiveTexture(GL_TEXTURE0 + iTextureIDs[iID] - 1)
+
+      glBindTexture(GL_TEXTURE_2D, iTextureIDs)
+
+#      glLoadIdentity()					# Reset The View
+#      glTranslatef(0.0,0.0,-5.0)
+
+#      glColor3f(1.0,1.0,1.0)
+#      glClearColor(0.0,0.0,0.0,0.0)
+      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+
+
+#      glLoadIdentity()
+#      glMatrixMode(GL_TEXTURE)
+
+      glEnable(GL_TEXTURE_2D)
+      glBegin(GL_QUADS)			    # Start Drawing The Cube
+
+      # Front Face (note that the texture's corners have to match the quad's corners)
+      glTexCoord2f(0.0, 0.0); glVertex3f(-1.0, -1.0,  0.0)	# Bottom Left Of The Texture and Quad
+      glTexCoord2f(1.0, 0.0); glVertex3f( 1.0, -1.0,  0.0)	# Bottom Right Of The Texture and Quad
+      glTexCoord2f(1.0, 1.0); glVertex3f( 1.0,  1.0,  0.0)	# Top Right Of The Texture and Quad
+      glTexCoord2f(0.0, 1.0); glVertex3f(-1.0,  1.0,  0.0)	# Top Left Of The Texture and Quad
+
+      glEnd()
+      glDisable(GL_TEXTURE_2D)
+
+      glutSwapBuffers()
 
       return
         
@@ -132,11 +214,11 @@ def display():
       w=glutGet(GLUT_WINDOW_WIDTH)
       h=glutGet(GLUT_WINDOW_HEIGHT)
       
-      glScissor (0,0,w,h)
-      glClearColor(0,0,0,0)
-      glClear(GL_COLOR_BUFFER_BIT)
+#      glScissor (0,0,w,h)
+#      glClearColor(0,0,0,0)
+#      glClear(GL_COLOR_BUFFER_BIT)
       
-      glEnable(GL_SCISSOR_TEST)
+#      glEnable(GL_SCISSOR_TEST)
 #      glScissor(int(0.05*w),int(0.55*h),int(0.4*w),int(0.4*h))
 #      glClearColor(0.4,0.4,0.6,0)
       glClearColor(0.0,0.0,0.0,0.0)
@@ -147,9 +229,13 @@ def display():
       gluLookAt(0,0,3,0,0,0,0,1,0)
       glMatrixMode(GL_MODELVIEW)    
 #      glViewport(int(0.05*w),int(0.55*h),int(0.4*w),int(0.4*h))
-      glCallList(1) 
+#      glCallList(1)
+
+      render_image(0)
+      glMatrixMode(GL_MODELVIEW)
       glPushMatrix()
       glLoadIdentity()
+
       glCallList(2) 
       glPopMatrix()
 
@@ -188,20 +274,25 @@ def reshape(w, h):
       print ("Width=",w,"Height=",h)
 
 
-load_image('./images/Sport0.png','./data/ml.csv')
-#load_image('./images/Sport1.png','./data/mr.csv')
-load_images()
+
 
           
 glutInit(sys.argv)
-glutInitDisplayMode(GLUT_DOUBLE|GLUT_RGB|GLUT_DEPTH)
+glutInitDisplayMode(GLUT_DOUBLE|GLUT_RGBA|GLUT_DEPTH)
 glutInitWindowSize(800, 500)
 glutInitWindowPosition(100, 100)
 glutCreateWindow(b"PyOpenGL Demo")
+
+load_image('NeHe.bmp','./data/ml.csv')
+#load_image('./images/Sport0.png','./data/ml.csv')
+#load_image('./images/Sport1.png','./data/mr.csv')
+load_images()
+
 glClearColor(1,1,0,0)
 glPolygonMode(GL_FRONT_AND_BACK,GL_FILL)
 glEnable(GL_DEPTH_TEST)
-glDepthFunc(GL_LESS);
+glDepthFunc(GL_LESS)
+glShadeModel(GL_SMOOTH)
 
 glutDisplayFunc(display)
 glutKeyboardFunc(keyHandler)
@@ -210,8 +301,9 @@ glutReshapeFunc(reshape)
 glMatrixMode(GL_PROJECTION)
 glLoadIdentity()
 glMatrixMode(GL_MODELVIEW)
-create_pyramid()
+#create_pyramid()
 create_3d_axes()
-render_image(0)
+#display()
+
 glutMainLoop()
 
