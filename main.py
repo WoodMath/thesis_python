@@ -13,44 +13,44 @@ from callbacks import *
 
 def main(argv):
 
-    global ims
+	global ims
 
-    glutInit(sys.argv)
-    glutInitDisplayMode(GLUT_DOUBLE|GLUT_RGBA|GLUT_DEPTH)
-    glutInitWindowSize(800, 500)
-    glutInitWindowPosition(100, 100)
-    glutCreateWindow(b"PyOpenGL Demo")
+	glutInit(sys.argv)
+	glutInitDisplayMode(GLUT_DOUBLE|GLUT_RGBA|GLUT_DEPTH)
+	glutInitWindowSize(800, 500)
+	glutInitWindowPosition(100, 100)
+	glutCreateWindow(b"PyOpenGL Demo")
 
-    #load_image('NeHe.bmp','./data/ml.csv')
-    ims.addImage('./images/Sport0.png','./data/pml.csv')
-    #load_image('./images/Sport1.png','./data/pmr.csv')
-    ims.loadImages()
+	#load_image('NeHe.bmp','./data/ml.csv')
+	ims.addImage('./images/Sport0.png','./data/pml.csv')
+	#load_image('./images/Sport1.png','./data/pmr.csv')
+	ims.loadImages()
 
 
 
-    glClearColor(1,1,0,0)
-    glPolygonMode(GL_FRONT_AND_BACK,GL_FILL)
-    glEnable(GL_DEPTH_TEST)
-    glDepthFunc(GL_LESS)
-    glShadeModel(GL_SMOOTH)
+	glClearColor(1,1,0,0)
+	glPolygonMode(GL_FRONT_AND_BACK,GL_FILL)
+	glEnable(GL_DEPTH_TEST)
+	glDepthFunc(GL_LESS)
+	glShadeModel(GL_SMOOTH)
 
-    glutDisplayFunc(display)
-    glutKeyboardFunc(keyPressed)
-    glutSpecialFunc(specialPressed)
-    #glutKeyboardUpFunc(keyPressedUp)
-    #glutSpecialUpFunc(specialPressedUp)
+	glutDisplayFunc(display)
+	glutKeyboardFunc(keyPressed)
+	glutSpecialFunc(specialPressed)
+	#glutKeyboardUpFunc(keyPressedUp)
+	#glutSpecialUpFunc(specialPressedUp)
 
-    glutTimerFunc(300,timer,0)
-    glutReshapeFunc(reshape)
-    glMatrixMode(GL_PROJECTION)
-    glLoadIdentity()
-    glMatrixMode(GL_MODELVIEW)
-    #create_pyramid()
-    create_3d_axes()
-    #display()
+	glutTimerFunc(30,timer,0)
+	glutReshapeFunc(reshape)
+	glMatrixMode(GL_PROJECTION)
+	glLoadIdentity()
+	glMatrixMode(GL_MODELVIEW)
+	#create_pyramid()
+	create_3d_axes()
+	#display()
 
-    glutMainLoop()
+	glutMainLoop()
 
 
 if __name__ == "__main__":
-   main(sys.argv[1:])
+	main(sys.argv[1:])
