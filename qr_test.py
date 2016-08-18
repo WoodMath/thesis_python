@@ -17,8 +17,8 @@ print(R)
 
 
 for i in range(3):
-    for j in range(3):
-        print(' A[',str(i),'][',str(j),'] = scipy.matrix(Q[',str(i),'])*scipy.matrix((R.T)[',str(j),']).T = ',scipy.matrix(Q[i])*scipy.matrix((R.T)[j]).T)
+	for j in range(3):
+		print(' A[',str(i),'][',str(j),'] = scipy.matrix(Q[',str(i),'])*scipy.matrix((R.T)[',str(j),']).T = ',scipy.matrix(Q[i])*scipy.matrix((R.T)[j]).T)
 
 print(' ')
 print(' Q*R = ','\n', str(Q*R),'\n')

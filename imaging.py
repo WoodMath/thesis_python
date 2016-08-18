@@ -43,7 +43,7 @@ Incr = 1
 
 sReferences="""
 Taken From:
-    https://docs.python.org/3.6/library/csv.html
+	https://docs.python.org/3.6/library/csv.html
 """
 
 
@@ -51,9 +51,11 @@ class Im:
       
 	def __init__(self):
 		self.matrixProjection=[]
+		self.matrixP=[]
 		self.matrixA=[]
 		self.matrixR=[]
 		self.matrixT=[]
+		self.matrixRT=[]
 		self.sMatrixFilename=[]
 		self.sTextureFilename=[]
 		self.imageData=[]
@@ -66,8 +68,8 @@ class Im:
 	def loadCSV(self,sFilename):
 		arr=[]
 		with open(sFilename, newline='') as csvfile:
-			spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
-			for row in spamreader:
+			reader = csv.reader(csvfile, delimiter=' ', quotechar='|')
+			for row in reader:
 				col = vect_float(row[0].split(','))
 				arr.append(col)
         
@@ -86,11 +88,22 @@ class Im:
 		except:
 			print(' Problem loading \'', str(sFilename), '\'')
 		self.matrixProjection = arr
-
+		self.matrixP = np.matrix(arr)
 		(a,r,t) = art(arr)
+		rt = np.concatenate((np.matrix(r),np.matrix(t)),axis=1)
 		self.matrixA=a
 		self.matrixR=r
 		self.matrixT=t
+		self.matrixRT=rt
+
+		print(' arr = ','\n',str(arr),end='\n\n')
+		print(' p = ','\n',str(self.matrixP),end='\n\n')
+		print(' a = ','\n',str(a),end='\n\n')
+		print(' r = ','\n',str(r),end='\n\n')
+		print(' t = ','\n',str(t),end='\n\n')
+		print(' rt = ','\n',str(rt),end='\n\n')
+		print(' a*rt = ','\n',str(a*rt),end='\n\n')
+
 
 		return arr
     
@@ -210,8 +223,9 @@ class Ims:
 			return
 
 		iID = self.images[iIndex].ID
-		print(' iID = ', str(iID))
-		print(' iIndex = ', str(iIndex))
+		tSize = self.images[iIndex].imageSize
+#		print(' iID = ', str(iID))
+#		print(' iIndex = ', str(iIndex))
         
 		glActiveTexture(GL_TEXTURE0 + iIndex)
 		glBindTexture(GL_TEXTURE_2D, iID)
@@ -228,15 +242,19 @@ class Ims:
 #		glMatrixMode(GL_TEXTURE)
 
 		glEnable(GL_TEXTURE_2D)
+		glPushMatrix()
+#		glScalef(0.1,0.1,1.0)
+		glScalef(float(tSize[0])/100.00,float(tSize[1])/100.00,1.00)
 		glBegin(GL_QUADS)			    # Start Drawing The Cube
 
 		# Front Face (note that the texture's corners have to match the quad's corners)
-		glTexCoord2f(0.0, 0.0); glVertex3f(-1.0, -1.0,  0.0)	# Bottom Left Of The Texture and Quad
-		glTexCoord2f(1.0, 0.0); glVertex3f( 1.0, -1.0,  0.0)	# Bottom Right Of The Texture and Quad
+		glTexCoord2f(0.0, 0.0); glVertex3f(-0.0, -0.0,  0.0)	# Bottom Left Of The Texture and Quad
+		glTexCoord2f(1.0, 0.0); glVertex3f( 1.0, -0.0,  0.0)	# Bottom Right Of The Texture and Quad
 		glTexCoord2f(1.0, 1.0); glVertex3f( 1.0,  1.0,  0.0)	# Top Right Of The Texture and Quad
-		glTexCoord2f(0.0, 1.0); glVertex3f(-1.0,  1.0,  0.0)	# Top Left Of The Texture and Quad
+		glTexCoord2f(0.0, 1.0); glVertex3f(-0.0,  1.0,  0.0)	# Top Left Of The Texture and Quad
 
 		glEnd()
+		glPopMatrix()
 		glDisable(GL_TEXTURE_2D)
 
 #		glutSwapBuffers()

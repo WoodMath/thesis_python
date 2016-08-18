@@ -73,7 +73,7 @@ def display():
 
           
       
-#	 glFlush()
+	glFlush()
 	glutSwapBuffers()                 
       
 	glLoadIdentity()
@@ -101,7 +101,8 @@ def keyHandler(Key, MouseX, MouseY):
 def timer(dummy):
 	display()
 	glutTimerFunc(30,timer,0)
+
 def reshape(w, h):
 	print ("Width=",w,"Height=",h)
-
+	glViewport(0,0,w,h)
       
