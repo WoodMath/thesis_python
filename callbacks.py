@@ -8,6 +8,7 @@ from PIL import Image
 
 from inputs import *
 from imaging import *
+from display import *
 from main import *
 Angle = 0
 Incr = 1
@@ -38,6 +39,7 @@ def display():
 	global Incr
 	global vCamPos
 	global ims
+	global disp
       
 	w=glutGet(GLUT_WINDOW_WIDTH)
 	h=glutGet(GLUT_WINDOW_HEIGHT)
@@ -54,7 +56,7 @@ def display():
 	glMatrixMode(GL_PROJECTION)
 	glLoadIdentity()
 	glFrustum(-1,1,-1,1,1,30)
-	gluLookAt(0,0,3,0,0,0,0,1,0)
+	gluLookAt(disp.position[0],disp.position[1],disp.position[2],0,0,0,0,1,0)
 	glMatrixMode(GL_MODELVIEW)    
 #	glViewport(int(0.05*w),int(0.55*h),int(0.4*w),int(0.4*h))
 #	glCallList(1)

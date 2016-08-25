@@ -5,10 +5,13 @@ from OpenGL.GL import *
 from OpenGL.GLU import *    
 from OpenGL.GLUT import *
 
+from display import *
 from inputs import *
 from imaging import *
 
 ims = Ims()
+disp = Display()
+
 from callbacks import *
 
 def main(argv):

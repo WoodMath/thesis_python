@@ -96,6 +96,7 @@ class Im:
 		self.matrixT=t
 		self.matrixRT=rt
 
+		sDummy = """
 		print(' arr = ','\n',str(arr),end='\n\n')
 		print(' p = ','\n',str(self.matrixP),end='\n\n')
 		print(' a = ','\n',str(a),end='\n\n')
@@ -103,7 +104,7 @@ class Im:
 		print(' t = ','\n',str(t),end='\n\n')
 		print(' rt = ','\n',str(rt),end='\n\n')
 		print(' a*rt = ','\n',str(a*rt),end='\n\n')
-
+		"""
 
 		return arr
     
@@ -134,8 +135,11 @@ class Im:
 		self.imageBytes = image.tobytes("raw", "RGBX", 0, -1)
 
 		self.ID = glGenTextures(1)
+
+		sDummy = """
 		print(' self.ID = ', str(self.ID))
 		print(' type(self.ID) = ', str(type(self.ID)))
+		"""
 
 #		image.show()
 
